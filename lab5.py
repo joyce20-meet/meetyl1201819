@@ -64,7 +64,7 @@ for grade in grades:
 
     print("Average: " + str(avg))
 
-    print("Grade: " + letter_grade)
+    print("Grade: " + str(letter_grade))
 
 if letter-grade is "F":
     print ("Student is failing.")

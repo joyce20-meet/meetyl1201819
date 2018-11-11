@@ -7,12 +7,32 @@ for i in range(5):
 	turtle.right(angle)
 	
 turtle.mainloop()
+
+import turtle
+for i in range(4):
+	turtle.forward(50)
+	turtle.left(90)
+turtle.right(45)
+turtle.forward(50)
+turtle.left(115)
+turtle.forward(50)
+
+
+
+turtle.mainloop()
 '''
 import turtle
-turtle.register_shape("new_shape",((50,0),(50,50),(0,50),(0,0))
-turtle.goto(50,0)
-turtle.goto(50,0)
-turtle.goto(50,50)
-turtle.goto(0,50)
-tur
+for i in range(500):
+	#turtle.pd()
+	turtle.forward(100)
+	turtle.right(45)
+	turtle.forward(50)
+	turtle.right(100)
+	turtle.forward(25)
 
+	turtle.pu()
+	turtle.home()
+	turtle.right(i)
+	turtle.pd()
+	#turtle.home()
+turtle.mainloop()
