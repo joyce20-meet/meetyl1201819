@@ -9,21 +9,22 @@ for i in range(5):
 turtle.mainloop()
 
 import turtle
+turtle.begin_fill()
 for i in range(4):
 	turtle.forward(50)
 	turtle.left(90)
 turtle.right(45)
 turtle.forward(50)
-turtle.left(115)
+turtle.left(115.5)
 turtle.forward(50)
-
+turtle.end_fill()
 
 
 turtle.mainloop()
-'''
 import turtle
-for i in range(500):
-	#turtle.pd()
+turtle.speed(0)
+for i in range(365):
+	
 	turtle.forward(100)
 	turtle.right(45)
 	turtle.forward(50)
@@ -34,5 +35,29 @@ for i in range(500):
 	turtle.home()
 	turtle.right(i)
 	turtle.pd()
-	#turtle.home()
 turtle.mainloop()
+
+import turtle
+#turtle.begin_fill()
+turtle.circle(100)
+#turtle.end_fill()
+turtle.pu()
+turtle.goto(100,-100)
+turtle.pd()
+turtle.circle(100)
+turtle.pu()
+turtle.goto(220,0)
+turtle.pd()
+turtle.circle(100)
+turtle.pu()
+turtle.goto(-125,-110)
+turtle.pendown()
+turtle.circle(100)
+turtle.pu()
+turtle.goto(-220,0)
+turtle.pd()
+#turtle.begin_fill()
+turtle.circle(100)
+#turtle.end_fill()
+turtle.mainloop()
+'''
