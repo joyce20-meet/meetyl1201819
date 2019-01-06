@@ -1,4 +1,4 @@
-'''
+
 class Animal(object):
 	def __init__(self,sound,name,age,favorite_color):
 		self.sound = sound

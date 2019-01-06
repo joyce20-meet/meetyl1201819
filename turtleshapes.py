@@ -38,7 +38,8 @@ for i in range(365):
 turtle.mainloop()
 
 import turtle
-#turtle.begin_fill()
+turtle.begin_fill()
+turtle.fillcolor('blue')
 turtle.circle(100)
 #turtle.end_fill()
 turtle.pu()
@@ -57,7 +58,6 @@ turtle.pu()
 turtle.goto(-220,0)
 turtle.pd()
 #turtle.begin_fill()
-turtle.circle(100)
 #turtle.end_fill()
 turtle.mainloop()
 '''

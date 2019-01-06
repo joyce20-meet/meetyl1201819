@@ -16,28 +16,29 @@ class Ball(Turtle):
 		#self.width = width
 		#self.height = height
 	
-	def move(self):
+	def move(self, height, width):
 		oldx = self.xcor()
 		oldy = self.ycor()
 		newx = oldx + self.dx
 		newy = oldy + self.dy
-		self.goto(newx,newy)
-		"""
+		
 		left_side = newx - self.radius
 		right_side = newx + self.radius
 		top_side = newy + self.radius
 		bottom_side = newy - self.radius
-		 #self.height = height
-		#self.width = width
-		#if top_side >= self.height:
-		#	self.dy = -(self.dy)
-		#elif bottom_side <= -(self.height):
-		#	self.y = -self.dy
-		#elif right_side >= width :
-		# 	self.dx = -self.dx
-		#elif left_side <= -(self.width) :
-		 #	self.dx = -(self.dx)
-		"""
+		self.height = height
+		self.width = width
+		if top_side > self.height:
+			self.dy = -self.dy
+		elif bottom_side < -height:
+			self.dy = -self.dy
+		elif right_side > width :
+		 	self.dx = -self.dx
+
+		elif left_side < -width:
+			self.dx = -self.dx
+		self.goto(newx,newy)
+		
 def check_collision(ball_1,ball_2):
 	x1 = ball_1.xcor()
 	y1 = ball_1.ycor()
@@ -56,7 +57,7 @@ ball_1 = Ball(100,100,5,4,20,"pink")
 ball_2 = Ball(50,50,4,3,25,"blue")
 
 while 1==1:
-	ball_1.move()
-	ball_2.move()
+	ball_1.move(300,300)
+	ball_2.move(300,300)
 	check_collision(ball_1,ball_2)
 turtle.mainloop()
