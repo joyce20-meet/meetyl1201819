@@ -1,3 +1,4 @@
+
 from turtle import *
 import random
 import turtle
@@ -39,4 +40,4 @@ class Ball(Turtle):
 			self.dx = -self.dx
 		self.goto(newx,newy)
 
-#turtle.mainloop()
+
