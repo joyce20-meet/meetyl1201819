@@ -39,5 +39,3 @@ class Ball(Turtle):
 		elif left_side_ball < -self.width:
 			self.dx = -self.dx
 		self.goto(newx,newy)
-
-
