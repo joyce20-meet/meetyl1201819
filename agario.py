@@ -1,32 +1,52 @@
-
+'''
 from ball import Ball
 import turtle
 import time
 import random
 import math
+
 turtle.tracer(0,0)
 turtle.hideturtle()
-
 RUNNING = True
 SLEEP = 0.0077
 turtle.pu()
 SCREEN_WIDTH = turtle.getcanvas().winfo_width()/2
 SCREEN_HEIGHT = turtle.getcanvas().winfo_height()/2
-MY_BALL = Ball(50,50,5,4,70,"pink")
+MY_BALL = Ball(0,0,5,4,30,"lightsteelblue")
+
 #Main Variables
 NUMBER_OF_BALLS = 7
 MINIMUM_BALL_RADIUS = 10
-MAXIMUM_BALL_RADIUS = 100
+MAXIMUM_BALL_RADIUS = 70
 MINIMUM_BALL_DX = -5
 MAXIMUM_BALL_DX = 5
 MAXIMUM_BALL_DY = 5
 MINIMUM_BALL_DY = -5
+
 #set up for the score
 global score
 score = 0 
-BALLS = []
 Height = 350
 Width = 40 
+
+#setting my background color
+turtle.register_shape('marble.gif')
+turtle.bgpic('marble.gif')
+global timescore
+timescore = 0
+
+timewrite = turtle.Turtle()
+timewrite.ht()
+def timer():
+	global timescore
+	timescore = int(time.clock()*1.5)
+	timewrite.goto(200,350)
+	timewrite.clear()
+	timewrite.write(" Time : " + str(timescore),move=False , align="left" , font=("Arial",16,"bold"))
+
+
+#a list to store all of my balls so i can use them later
+BALLS = []
 #creating balls (Food for MY_BALL):
 for i in range(7):
 	x = random.randint(-SCREEN_WIDTH + MAXIMUM_BALL_RADIUS , SCREEN_WIDTH - MINIMUM_BALL_RADIUS)
@@ -57,11 +77,11 @@ def collide(ball_a,ball_b):
 		return True
 	else:
 		return False
+
 def check_all_balls_collision():
 	for ball_a in BALLS:
 		for ball_b in BALLS:
 			if collide(ball_b,ball_a):
-				# save radius 
 				radius = random.randint(MINIMUM_BALL_RADIUS,MAXIMUM_BALL_RADIUS)
 				x = random.randint(-SCREEN_WIDTH + MAXIMUM_BALL_RADIUS , SCREEN_WIDTH - MINIMUM_BALL_RADIUS)
 				y = random.randint(-SCREEN_HEIGHT + MAXIMUM_BALL_RADIUS , SCREEN_HEIGHT - MAXIMUM_BALL_RADIUS)
@@ -86,7 +106,7 @@ def check_all_balls_collision():
 					ball_a.shapesize(radius/10)
 					ball_a.color(color)
 					ball_a.dx = dx
-					ball_a.dy = dy 
+					ball_a.dy = dy   
 					ball_b.radius = ball_b.radius + 1
 					ball_b.shapesize(ball_b.radius/10)
 				else:
@@ -101,6 +121,7 @@ def check_all_balls_collision():
 def move_All_BALLS():
 	for newballs in BALLS:
 		newballs.move(SCREEN_WIDTH,SCREEN_HEIGHT)
+
 def check_myball_collision():
 	global score
 	for ball in BALLS:
@@ -108,9 +129,10 @@ def check_myball_collision():
 			MY_BALL_RADIUS = MY_BALL.radius
 			ballRadius = ball.radius
 			radius = random.randint(MINIMUM_BALL_RADIUS,MAXIMUM_BALL_RADIUS)
-
+			color = (random.random(), random.random(), random.random())
 			x = random.randint(-SCREEN_WIDTH + MAXIMUM_BALL_RADIUS , SCREEN_WIDTH - MINIMUM_BALL_RADIUS)
 			y = random.randint(-SCREEN_HEIGHT + MAXIMUM_BALL_RADIUS , SCREEN_HEIGHT - MAXIMUM_BALL_RADIUS)
+
 			while x in range (int(-MY_BALL.radius+MY_BALL.xcor()), int(MY_BALL.xcor()+MY_BALL.radius)):
 					x = random.randint(-SCREEN_WIDTH + MAXIMUM_BALL_RADIUS , SCREEN_WIDTH - MINIMUM_BALL_RADIUS)
 	
@@ -122,11 +144,15 @@ def check_myball_collision():
 				dx = random.randint(MINIMUM_BALL_DX,MAXIMUM_BALL_DX)
 			while dy == 0:
 				dy = random.randint(MINIMUM_BALL_DY,MAXIMUM_BALL_DY)
-			color = (random.random(), random.random(), random.random())
+			
 			if MY_BALL_RADIUS < ballRadius: 
 				return False
+
 			if MY_BALL_RADIUS > ballRadius:
-				MY_BALL.radius = MY_BALL.radius + 1
+				if ballRadius > 30:
+					MY_BALL.radius = MY_BALL.radius + 4
+				if ballRadius < 30:
+					MY_BALL.radius = MY_BALL.radius + 2
 				MY_BALL.shapesize (MY_BALL.radius/10)
 				ball.goto(x,y)
 				ball.radius = radius
@@ -134,27 +160,37 @@ def check_myball_collision():
 				ball.color(color)
 				ball.dx = dx
 				ball.dy = dy 
-				score = score+1
+				if ballRadius > 30:
+					score = score + 4
+				if ballRadius < 30:
+					score = score +2
 			turtle.undo()
 			turtle.goto(Width,Height)
 			turtle.write(str(score),move=False , align="right" , font=("Arial",16,"bold"))
-
 	return True
+
 def movearound(event):
 	x = event.x - SCREEN_WIDTH
 	y = -event.y + SCREEN_HEIGHT
 	MY_BALL.goto(x,y)
-
 turtle.getcanvas().bind("<Motion>", movearound)
 turtle.listen()
-def check():
 
+def check():
 	check_all_balls_collision()
 	check_myball_collision()
+
 	if MY_BALL.xcor() == newballs.xcor() or MY_BALL.ycor()==newballs.ycor():
 		x = random.randint(-SCREEN_WIDTH + MAXIMUM_BALL_RADIUS , SCREEN_WIDTH - MINIMUM_BALL_RADIUS)
 		y = random.randint(-SCREEN_HEIGHT + MAXIMUM_BALL_RADIUS , SCREEN_HEIGHT - MAXIMUM_BALL_RADIUS)
+
+def win():
+	
+	if score == 50:
+		MY_BALL.color("gold")
+
 turtle.write(str(score))
+#running all of the functions
 while RUNNING:
 	check()				
 	RUNNING = check_myball_collision()
@@ -162,7 +198,13 @@ while RUNNING:
 	check_all_balls_collision()
 	turtle.update()
 	time.sleep(SLEEP)
-#turtle.clear()
+	win()
+	timer()
+turtle.clear()
 turtle.goto(0,0)
-turtle.write("You Lost",move=False , align='center' ,font=('Arial',16,"bold"))
+turtle.write("You Lost",move=False , align='center' ,font=('Arial',23,"bold"))
+turtle.pu()
+turtle.goto(0,-50)
+turtle.write(int(score),align = "center", font=("Arial",23,"bold"))
 turtle.mainloop()
+'''
