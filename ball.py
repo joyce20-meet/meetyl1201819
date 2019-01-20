@@ -1,4 +1,4 @@
-'''
+
 from turtle import *
 import random
 import turtle
@@ -17,7 +17,7 @@ class Ball(Turtle):
 		self.dy = dy
 		self.radius = radius
 
-	def move(self,height,width):
+	def move(self,SCREEN_WIDTH,SCREEN_HEIGHT):
 		oldx = self.xcor()
 		oldy = self.ycor()
 		newx = oldx + self.dx
@@ -27,16 +27,15 @@ class Ball(Turtle):
 		up_side_ball = newy + self.radius
 		down_side_ball = newy - self.radius
 		
-		self.height = height
-		self.width = width
-		if up_side_ball > self.height:
+		self.SCREEN_HEIGHT = SCREEN_HEIGHT
+		self.SCREEN_WIDTH = SCREEN_WIDTH
+		if up_side_ball > self.SCREEN_HEIGHT:
 			self.dy = -self.dy
-		elif down_side_ball < -self.height:
+		elif down_side_ball < -self.SCREEN_HEIGHT:
 			self.dy = -self.dy
-		elif right_side_ball > self.width :
+		elif right_side_ball > self.SCREEN_WIDTH :
 		 	self.dx = -self.dx
 
-		elif left_side_ball < -self.width:
+		elif left_side_ball < -self.SCREEN_WIDTH:
 			self.dx = -self.dx
 		self.goto(newx,newy)
-'''
