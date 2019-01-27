@@ -4,7 +4,9 @@ import turtle
 import time
 import random
 import math
-
+import tkinter as tk
+from tkinter import simpledialog
+from turtle import Screen
 turtle.tracer(0,0)
 turtle.hideturtle()
 RUNNING = True
@@ -12,20 +14,21 @@ SLEEP = 0.0077
 turtle.pu()
 SCREEN_WIDTH = turtle.getcanvas().winfo_width()/2
 SCREEN_HEIGHT = turtle.getcanvas().winfo_height()/2
-MY_BALL = Ball(0,0,10,10,30,"lightsteelblue")
+MY_BALL = Ball(0,0,10,10,30,"plum")
+lives=3
 
 #food
 MINIMUM_FOOD_RADIUS = 5
 MAXIMUM_FOOD_RADIUS = 10
 
 #Main Variables
-NUMBER_OF_BALLS = 10
+NUMBER_OF_BALLS = 7
 MINIMUM_BALL_RADIUS = 10
-MAXIMUM_BALL_RADIUS = 60
-MINIMUM_BALL_DX = -5
-MAXIMUM_BALL_DX = 5
-MAXIMUM_BALL_DY = 5
-MINIMUM_BALL_DY = -5
+MAXIMUM_BALL_RADIUS = 100
+MINIMUM_BALL_DX = -3
+MAXIMUM_BALL_DX = 3.5
+MAXIMUM_BALL_DY = 3.5
+MINIMUM_BALL_DY = -3
 
 #set up for the score
 global score
@@ -33,10 +36,14 @@ score = 0
 Height = 350
 Width = 40 
 turtle.goto(Width,Height)
-#
+
 #setting my background color
 turtle.register_shape('marble.gif')
 turtle.bgpic('marble.gif')
+
+greeting = simpledialog.askstring("Input", "Are you ready to start the game?(yes or no) ", parent=tk.Tk().withdraw())
+if greeting == ("no") or greeting == ("No"):
+	quit()
 
 #time 
 global timescore
@@ -45,7 +52,7 @@ timewrite = turtle.Turtle()
 timewrite.ht()
 def timer():
 	global timescore
-	timescore = int(time.clock()*1.5)
+	timescore = int(time.clock()*2.5)
 	timewrite.goto(200,350)
 	timewrite.clear()
 	timewrite.write(" Time : " + str(timescore),move=False , align="left" , font=("Arial",16,"bold"))
@@ -53,6 +60,8 @@ def timer():
 # lists to store all of my balls so i can use them later
 BALLS = []
 FOOD = []
+global Hearts
+Hearts = []
 
 #main collision function
 def collide(ball_a,ball_b):
@@ -69,32 +78,32 @@ def collide(ball_a,ball_b):
 
 #creating food
 turtle.register_shape("pineapple.gif")
+turtle.register_shape("heart.gif")
+
+def create_heart():
+
+    radius = 10
+    heart1 = Ball(-200,350,0,0,radius,color)
+    heart2 = Ball(-250,350,0,0,radius,color)
+    heart3 = Ball(-300,350,0,0,radius,color)
+    heart1.shape('heart.gif')
+    heart2.shape("heart.gif")
+    heart3.shape("heart.gif")
+    Hearts.append(heart1)
+    Hearts.append(heart2)
+    Hearts.append(heart3)     
 def create_food():
-	for p in range(40):
+	for p in range(20):
 		x = random.randint(-SCREEN_WIDTH + MAXIMUM_BALL_RADIUS , SCREEN_WIDTH - MINIMUM_BALL_RADIUS)
 		y = random.randint(-SCREEN_HEIGHT + MAXIMUM_BALL_RADIUS , SCREEN_HEIGHT - MAXIMUM_BALL_RADIUS)
-		dx = random.randint(MINIMUM_BALL_DX,MAXIMUM_BALL_DX)
-		dy = random.randint(MINIMUM_BALL_DY,MAXIMUM_BALL_DY)
+		
 		radius = random.randint(MINIMUM_FOOD_RADIUS,MAXIMUM_FOOD_RADIUS)
+		dx = dy = 0
 		food = Ball(x,y,dx,dy,radius,color)
 		FOOD.append(food)
 		food.shape("pineapple.gif")
-'''
-def check_food_collision():
-	for food_a in FOOD:
-		for food_b in FOOD:
-			if collide(food_a,food_b):
-				x = random.randint(-SCREEN_WIDTH + MAXIMUM_FOOD_RADIUS , SCREEN_WIDTH - MINIMUM_FOOD_RADIUS)
-				y = random.randint(-SCREEN_HEIGHT + MAXIMUM_FOOD_RADIUS , SCREEN_HEIGHT - MAXIMUM_FOOD_RADIUS)
-				radius = random.randint(MINIMUM_FOOD_RADIUS,MAXIMUM_FOOD_RADIUS)
-				if food_a.radius > food_b.radius:
-					food_b.goto(x,y)
-					food_b.radius = radius
-				else:
-					food_a.goto(x,y)
 
-					food_a.radius = radius
-'''			
+
 def eat_food():
 	global score
 	for food in FOOD:
@@ -112,9 +121,9 @@ def eat_food():
 			dx = 0
 			dy = 0
 			while dx == 0:
-				dx = random.randint(MINIMUM_BALL_DX,MAXIMUM_BALL_DX)
+				dx = random.uniform(MINIMUM_BALL_DX,MAXIMUM_BALL_DX)
 			while dy == 0:
-				dy = random.randint(MINIMUM_BALL_DY,MAXIMUM_BALL_DY)
+				dy = random.uniform(MINIMUM_BALL_DY,MAXIMUM_BALL_DY)
 				MY_BALL.radius = MY_BALL.radius + 1
 				MY_BALL.shapesize (MY_BALL.radius/10)
 				food.goto(x,y) 
@@ -128,7 +137,7 @@ def eat_food():
 	return True
 
 #creating balls (Food for MY_BALL):
-for i in range(10):
+for i in range(7):
 	x = random.randint(-SCREEN_WIDTH + MAXIMUM_BALL_RADIUS , SCREEN_WIDTH - MINIMUM_BALL_RADIUS)
 	while x in range ((-MAXIMUM_BALL_RADIUS*3)+MY_BALL.xcor(), MY_BALL.xcor()+(MAXIMUM_BALL_RADIUS*3)):
 		x = random.randint(-SCREEN_WIDTH + MAXIMUM_BALL_RADIUS , SCREEN_WIDTH - MINIMUM_BALL_RADIUS)
@@ -138,9 +147,9 @@ for i in range(10):
 	dx = 0
 	dy = 0
 	while dx == 0:
-		dx = random.randint(MINIMUM_BALL_DX,MAXIMUM_BALL_DX)
+		dx = random.uniform(MINIMUM_BALL_DX,MAXIMUM_BALL_DX)
 	while dy == 0:
-		dy = random.randint(MINIMUM_BALL_DY,MAXIMUM_BALL_DY)
+		dy = random.uniform(MINIMUM_BALL_DY,MAXIMUM_BALL_DY)
 	radius = random.randint(MINIMUM_BALL_RADIUS,MAXIMUM_BALL_RADIUS)
 	color = (random.random(), random.random(), random.random())
 	newballs = Ball(x,y,dx,dy,radius,color)
@@ -164,10 +173,10 @@ def check_all_balls_collision():
 				dx = 0 
 				dy = 0
 				while dx == 0 :
-					dx = random.randint(MINIMUM_BALL_DX,MAXIMUM_BALL_DX)
+					dx = random.uniform(MINIMUM_BALL_DX,MAXIMUM_BALL_DX)
 
 				while dy == 0:
-					dy = random.randint(MINIMUM_BALL_DY,MAXIMUM_BALL_DY)
+					dy = random.uniform(MINIMUM_BALL_DY,MAXIMUM_BALL_DY)
 
 				if ball_a.radius < ball_b.radius :
 					ball_a.goto(x,y)
@@ -178,6 +187,7 @@ def check_all_balls_collision():
 					ball_a.dy = dy   
 					ball_b.radius = ball_b.radius + 1
 					ball_b.shapesize(ball_b.radius/10)
+
 				else:
 					ball_b.goto(x,y)
 					ball_b.radius = radius
@@ -194,6 +204,8 @@ def move_All_BALLS():
 
 def check_myball_collision():
 	global score
+	global Hearts
+	global lives
 	for ball in BALLS:
 		if collide(MY_BALL,ball):
 			MY_BALL_RADIUS = MY_BALL.radius
@@ -211,14 +223,36 @@ def check_myball_collision():
 			dx = 0
 			dy = 0
 			while dx == 0:
-				dx = random.randint(MINIMUM_BALL_DX,MAXIMUM_BALL_DX)
+				dx = random.uniform(MINIMUM_BALL_DX,MAXIMUM_BALL_DX)
 			while dy == 0:
-				dy = random.randint(MINIMUM_BALL_DY,MAXIMUM_BALL_DY)
+				dy = random.uniform(MINIMUM_BALL_DY,MAXIMUM_BALL_DY)
 			
-			if MY_BALL_RADIUS < ballRadius: 
-				return False
-
-			if MY_BALL_RADIUS > ballRadius:
+			if MY_BALL_RADIUS < ballRadius:
+				lives= lives -1
+				ball.goto(x,y)
+				ball.radius = radius
+				ball.shapesize(radius/10)
+				ball.color(color)
+				ball.dx = dx
+				ball.dy = dy 
+				if lives == 2:
+					Hearts[0].clear()
+					Hearts[0].ht()
+					turtle.update()
+					print('You lost your heart')
+				if lives == 1:
+					Hearts[1].clear()
+					Hearts[1].ht()
+					turtle.update()
+					print('You lost another heart')
+				if lives == 0:
+					Hearts[2].clear()
+					Hearts[2].ht()
+					turtle.update()
+					print('Your last chance')
+				return True
+				
+			else:
 				if ballRadius > 30:
 				
 					MY_BALL.radius = MY_BALL.radius + 4
@@ -232,7 +266,7 @@ def check_myball_collision():
 				ball.dx = dx
 				ball.dy = dy 
 				if ballRadius > 30:
-					score = score + 4
+					score = score + 3
 				if ballRadius < 30:
 					score = score +2
 			turtle.undo()
@@ -252,7 +286,7 @@ turtle.listen()
 
 def check():
 	check_all_balls_collision()
-	check_myball_collision()#
+	check_myball_collision()
 
 	if MY_BALL.xcor() == newballs.xcor() or MY_BALL.ycor()==newballs.ycor():
 		x = random.randint(-SCREEN_WIDTH + MAXIMUM_BALL_RADIUS , SCREEN_WIDTH - MINIMUM_BALL_RADIUS)
@@ -260,15 +294,14 @@ def check():
 
 def win():
 	
-	if score == 250:
+	if score == 50:
 		MY_BALL.color("gold")
-
-
+		
 turtle.write(str(score))
 create_food()
-
+create_heart()
 #running all of the functions
-while RUNNING:
+while lives > 0:
 	SCREEN_WIDTH = turtle.getcanvas().winfo_width()//2
 	SCREEN_HEIGHT = turtle.getcanvas().winfo_height()//2
 	check()				
@@ -280,17 +313,19 @@ while RUNNING:
 	win()
 	eat_food()
 	timer()
-
 for ball in BALLS:
 	ball.ht()
 for food in FOOD:
 	food.ht()
 
 turtle.update()
+MY_BALL.goto(50,100)
 turtle.goto(0,0)
 turtle.write("You Lost",move=False , align='center' ,font=('Arial',23,"bold"))
 turtle.pu()
 turtle.update()
 turtle.goto(0,-50)
 turtle.write(int(score),align = "center", font=("Arial",23,"bold"))
+
 turtle.mainloop()
+
