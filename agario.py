@@ -12,8 +12,8 @@ turtle.hideturtle()
 RUNNING = True
 SLEEP = 0.0077
 turtle.pu()
-SCREEN_WIDTH = turtle.getcanvas().winfo_width()/2
-SCREEN_HEIGHT = turtle.getcanvas().winfo_height()/2
+SCREEN_WIDTH = turtle.getcanvas().winfo_width()//2
+SCREEN_HEIGHT = turtle.getcanvas().winfo_height()//2
 MY_BALL = Ball(0,0,10,10,30,"plum")
 lives=3
 
@@ -326,6 +326,5 @@ turtle.pu()
 turtle.update()
 turtle.goto(0,-50)
 turtle.write(int(score),align = "center", font=("Arial",23,"bold"))
-
 turtle.mainloop()
 
