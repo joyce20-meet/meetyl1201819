@@ -30,3 +30,4 @@ p= Platform(0,-200,2,0,0)
 while True:
 	p.move()
 turtle.mainloop()
+'''

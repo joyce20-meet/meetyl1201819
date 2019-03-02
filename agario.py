@@ -91,6 +91,8 @@ def create_heart():
     heart3.shape("heart.gif")
     Hearts.append(heart1)
     Hearts.append(heart2)
+
+
     Hearts.append(heart3)     
 def create_food():
 	for p in range(20):
